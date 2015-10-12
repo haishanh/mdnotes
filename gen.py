@@ -33,7 +33,7 @@ class Note(object):
             # end is the index of '\n' in the same line
             self.frontmatter = self.content[:start]
             self.md = self.content[end+1:]
-        esle:
+        else:
             self.frontmatter = ''
             self.md = self.content
 
