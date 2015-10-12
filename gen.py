@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 import re
 import yaml
 import codecs
 import markdown
+from jinja2 import Template
 
 
 # Tentativ globals / should be removed in the future
@@ -43,20 +45,30 @@ class Note(object):
         else:
             return None
 
-    def render_md(self):
+    def gen_md(self):
         """
         Render markdown file
         Return rendered html
         """
         # https://pythonhosted.org/Markdown/extensions/index.html
-        extensions=['extra', 'codehilite']
-        html = markdown.markdown(self.md, extensions)
-        print(html)
+        extensions=['extra', 'codehilite', 'admonition',
+                    'smarty', 'sane_lists', 'wikilinks']
+        output_format = 'html5'
+        html = markdown.markdown(self.md, extensions=extensions,
+                                 output_format=output_format)
+        return html
 
     def render(self):
         self.content = load_file(self.md_filename)
         print(self.parse_frontmatter_and_strip())
-        self.render_md()
+        self.article = self.gen_md()
+        context = {}
+        context['article'] = self.article
+        with open('themes/templates/base.html') as f:
+            content = f.read().decode('utf-8')
+        template = Template(content)
+        html = template.render(context)
+        print(html)
 
 
 def test():

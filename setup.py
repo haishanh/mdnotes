@@ -6,6 +6,7 @@ setup(
     install_requires=[
         'markdown>=2.6.2', # markdown
         'PyYAML>=3.11',    # frontmatter
-        'Pygments>=2.0.2'  # codehilite
+        'Pygments>=2.0.2', # codehilite
+        'Jinja2>=2.8'      # templating
     ]
 )
