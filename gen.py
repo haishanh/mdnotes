@@ -1,6 +1,7 @@
 import re
 import yaml
 import codecs
+import markdown
 
 
 # Tentativ globals / should be removed in the future
@@ -35,19 +36,27 @@ class Note(object):
             self.frontmatter = self.content[:start]
             self.md = self.content[end+1:]
         else:
-            self.frontmatter = ''
+            self.frontmatter = None
             self.md = self.content
-        return yaml.load(self.frontmatter)
+        if self.frontmatter:
+            return yaml.load(self.frontmatter)
+        else:
+            return None
 
     def render_md(self):
         """
         Render markdown file
         Return rendered html
         """
-        pass
+        # https://pythonhosted.org/Markdown/extensions/index.html
+        extensions=['extra', 'codehilite']
+        html = markdown.markdown(self.md, extensions)
+        print(html)
+
     def render(self):
         self.content = load_file(self.md_filename)
         print(self.parse_frontmatter_and_strip())
+        self.render_md()
 
 
 def test():
