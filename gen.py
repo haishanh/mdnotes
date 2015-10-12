@@ -1,4 +1,5 @@
 import re
+import yaml
 import codecs
 
 
@@ -36,6 +37,7 @@ class Note(object):
         else:
             self.frontmatter = ''
             self.md = self.content
+        return yaml.load(self.frontmatter)
 
     def render_md(self):
         """
@@ -45,3 +47,16 @@ class Note(object):
         pass
     def render(self):
         self.content = load_file(self.md_filename)
+        print(self.parse_frontmatter_and_strip())
+
+
+def test():
+    import glob
+    mds = glob.glob('notes/*.md')
+    for md in mds:
+        note = Note(md)
+        note.render()
+
+
+if __name__ == '__main__':
+    test()
