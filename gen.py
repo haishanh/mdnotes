@@ -29,7 +29,7 @@ class Note(object):
 
     def __init__(self, filename):
         self.md_filename = filename
-        pass
+
     def parse_frontmatter_and_strip(self):
         """
         Parse frontmatter and strip it
@@ -59,14 +59,20 @@ class Note(object):
         """
         # https://pythonhosted.org/Markdown/extensions/index.html
         extensions=['extra', 'codehilite', 'admonition',
-                    'smarty', 'sane_lists', 'wikilinks']
+                    'toc', 'smarty', 'sane_lists', 'wikilinks']
         # TODO
-        extension_configs = {}
+        extension_configs = {'toc' : {
+                                    'anchorlink': True,
+                                    'permalink': True
+                                }
+                            }
         output_format = 'html5'
         md = markdown.Markdown(extensions=extensions,
+                               extension_configs = extension_configs,
                                output_format=output_format)
         html = md.convert(self.md)
-        return html
+        toc = getattr(md, 'toc', '')
+        return html, toc
 
     def mk_path(self):
         # currenly
@@ -87,9 +93,10 @@ class Note(object):
     def render(self):
         self.content = load_file(self.md_filename)
         print(self.parse_frontmatter_and_strip())
-        self.article = self.gen_md()
+        self.article, self.toc = self.gen_md()
         context = {}
         context['article'] = self.article
+        context['toc'] = self.toc
         with open('themes/templates/base.html') as f:
             content = f.read().decode('utf-8')
         template = Template(content)
