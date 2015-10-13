@@ -3,6 +3,7 @@ import re
 import os
 import sys
 import yaml
+import shutil
 import codecs
 import markdown
 from jinja2 import Template
@@ -92,6 +93,29 @@ class Note(object):
         html = template.render(context)
         save_file(self.mk_path(), html)
 
+## Resources related
+
+def move_res(topdir, ignore_prefix='_'):
+    topdir = topdir.rstrip(os.path.sep)
+    assert os.path.isdir(topdir)
+    for root, dirs, files in os.walk(topdir):
+        for dir in dirs:
+            if dir.startswith(ignore_prefix):
+                dirs.remove(dir)
+        for file in files:
+            if file.startswith(ignore_prefix): continue
+            src_path = os.path.join(root, file)
+            dst_sub = src_path[len(topdir):]
+            # dst_sub should have os.path.sep prefixed
+            dst_path = 'output' + dst_sub
+            try:
+                dst_dir = os.path.dirname(dst_path)
+                if not os.path.isdir(dst_dir): os.makedirs(dst_dir)
+                shutil.copy(src_path, dst_path)
+            except:
+                prt_exit('Can not copy file {0} to {1}'.format(src_path, dst_path))
+
+
 
 def test():
     import glob
@@ -99,6 +123,7 @@ def test():
     for md in mds:
         note = Note(md)
         note.render()
+    move_res('themes/resources')
 
 
 if __name__ == '__main__':
