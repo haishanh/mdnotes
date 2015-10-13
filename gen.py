@@ -60,8 +60,11 @@ class Note(object):
         # https://pythonhosted.org/Markdown/extensions/index.html
         extensions=['extra', 'codehilite', 'admonition',
                     'smarty', 'sane_lists', 'wikilinks']
+        # TODO
+        extension_configs = {}
         output_format = 'html5'
-        md = markdown.Markdown(extensions=extensions, output_format=output_format)
+        md = markdown.Markdown(extensions=extensions,
+                               output_format=output_format)
         html = md.convert(self.md)
         return html
 
