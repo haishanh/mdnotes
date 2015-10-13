@@ -3,10 +3,10 @@ import re
 import os
 import sys
 import yaml
+import jinja2
 import shutil
 import codecs
 import markdown
-from jinja2 import Template
 
 
 # Tentativ globals / should be removed in the future
@@ -91,15 +91,18 @@ class Note(object):
         return html_path
 
     def render(self):
+        loader = jinja2.FileSystemLoader('themes/templates')
+        env = jinja2.Environment(loader=loader)
         self.content = load_file(self.md_filename)
         print(self.parse_frontmatter_and_strip())
         self.article, self.toc = self.gen_md()
         context = {}
         context['article'] = self.article
         context['toc'] = self.toc
-        with open('themes/templates/base.html') as f:
-            content = f.read().decode('utf-8')
-        template = Template(content)
+        template = env.get_template('note.html')
+        # with open('themes/templates/index.html') as f:
+        #    content = f.read().decode('utf-8')
+        #template = jinja2.Template(content)
         html = template.render(context)
         save_file(self.mk_path(), html)
 
