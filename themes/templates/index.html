@@ -8,9 +8,10 @@
 {% endblock %}
 
 {% block content %}
-<div id="note-header">
-  <h2> {{ note.title }}</h2>
-  <div id="tags-in-header">
-  </div>
+{% for note in notes %}
+<div type="note-header">
+  <h2>{{ note.title }}</h2>
+  <div id="tags-in-header"></div>
 </div>
+{% endfor %}
 {% endblock %}
