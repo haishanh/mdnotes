@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
+import os
+import sys
 import yaml
 import codecs
 import markdown
@@ -16,6 +18,10 @@ def save_file(filename, text):
 def load_file(filename):
     with codecs.open(filename, 'r', encoding='utf-8') as f:
         return f.read()
+
+def prt_exit(fmt):
+    print(fmt)
+    sys.exit(1)
 
 
 class Note(object):
@@ -58,6 +64,22 @@ class Note(object):
                                  output_format=output_format)
         return html
 
+    def mk_path(self):
+        # currenly
+        html_dir = 'output'
+        _ = os.path.basename(self.md_filename)
+        basename, ext = os.path.splitext(_)
+        new_dir = html_dir + os.path.sep + basename
+        html_path = new_dir + os.path.sep + 'index.html'
+        # if html_path exist, likely new_dir should have been created
+        if not os.path.exists(html_path):
+            try:
+                os.makedirs(new_dir)
+            except:
+                prt_exit('Unable to create dir {0}'.format(new_dir))
+        self.html_path = html_path
+        return html_path
+
     def render(self):
         self.content = load_file(self.md_filename)
         print(self.parse_frontmatter_and_strip())
@@ -68,7 +90,7 @@ class Note(object):
             content = f.read().decode('utf-8')
         template = Template(content)
         html = template.render(context)
-        print(html)
+        save_file(self.mk_path(), html)
 
 
 def test():
