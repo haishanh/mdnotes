@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block left %}
+<section id="left" class="side toc">
+{{ toc }}
+</section>
+{% endblock %}
+
+{% block content %}
+<article>
+    <header id="article-header">Article header</header>
+    {{ article }}
+</article>
+{% endblock %}
