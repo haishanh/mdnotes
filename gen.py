@@ -61,8 +61,8 @@ class Note(object):
         extensions=['extra', 'codehilite', 'admonition',
                     'smarty', 'sane_lists', 'wikilinks']
         output_format = 'html5'
-        html = markdown.markdown(self.md, extensions=extensions,
-                                 output_format=output_format)
+        md = markdown.Markdown(extensions=extensions, output_format=output_format)
+        html = md.convert(self.md)
         return html
 
     def mk_path(self):
