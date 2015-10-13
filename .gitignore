@@ -1,3 +1,4 @@
+mdnotes/*.pyc
 venv/
 notes/
 output/
