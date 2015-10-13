@@ -28,27 +28,50 @@ def prt_exit(fmt):
 class Note(object):
 
     def __init__(self, filename):
+        # TODO do we have trouble if
+        #      the filename is non ascii?
         self.md_filename = filename
+
+    def set_tags(self, frontmatter):
+        for key in frontmatter:
+            if key.strip().lower() == 'tags':
+                # public
+                self.tags = frontmatter[key]
+                return
+        self.tags = None
+
+    def set_title(self, frontmatter):
+        for key in frontmatter:
+            if key.strip().lower() == 'title':
+                # public
+                self.title = frontmatter[key]
+                return
+        self.title, _ = os.path.splitext(self.md_filename)
 
     def parse_frontmatter_and_strip(self):
         """
         Parse frontmatter and strip it
         """
-        assert self.content
+        assert self._raw_content
+        raw_content = self._raw_content
 
         tridash_re=re.compile('^-{3,5}\s*$', re.MULTILINE)
-        m =  tridash_re.search(self.content)
+        m =  tridash_re.search(raw_content)
         if m:
             start, end = m.span()
             # start is the 1st dash index
             # end is the index of '\n' in the same line
-            self.frontmatter = self.content[:start]
-            self.md = self.content[end+1:]
+            self.frontmatter = raw_content[:start]
+            self.md = raw_content[end+1:]
         else:
             self.frontmatter = None
-            self.md = self.content
+            self.md = raw_content
         if self.frontmatter:
-            return yaml.load(self.frontmatter)
+            # strings in fm is unicode or ascii depending on whether
+            # the object is an ascii string or not
+            fm = yaml.load(self.frontmatter)
+            self.set_tags(fm)
+            self.set_title(fm)
         else:
             return None
 
@@ -90,11 +113,15 @@ class Note(object):
         self.html_path = html_path
         return html_path
 
-    def render(self):
-        loader = jinja2.FileSystemLoader('themes/templates')
-        env = jinja2.Environment(loader=loader)
-        self.content = load_file(self.md_filename)
-        print(self.parse_frontmatter_and_strip())
+    def render(self, env):
+        """
+        Rendering the template note.html
+        """
+
+        # load markdown file
+        self._raw_content = load_file(self.md_filename)
+        # parse frontmatter and strip it
+        self._fm = self.parse_frontmatter_and_strip()
         self.article, self.toc = self.gen_md()
         context = {}
         context['article'] = self.article
@@ -106,6 +133,20 @@ class Note(object):
         html = template.render(context)
         save_file(self.mk_path(), html)
 
+def template_init(path='themes/templates'):
+    """
+    Jinja2 loader/env init
+    Return a Jinja2.Environmant instance
+    """
+    loader = jinja2.FileSystemLoader(path)
+    return jinja2.Environment(loader=loader)
+
+def render_index_page(env, notes):
+    context = {}
+    context['notes'] = notes
+    template = env.get_template('index.html')
+    html = template.render(context)
+    save_file(os.path.join('output', 'index.html'), html)
 ## Resources related
 
 def move_res(topdir, ignore_prefix='_'):
@@ -131,11 +172,16 @@ def move_res(topdir, ignore_prefix='_'):
 
 
 def test():
+    env = template_init()
     import glob
     mds = glob.glob('notes/*.md')
+    notes = []
     for md in mds:
         note = Note(md)
-        note.render()
+        note.render(env)
+        notes.append(note)
+        print(note.title)
+    render_index_page(env, notes)
     move_res('themes/resources')
 
 
