@@ -2,7 +2,7 @@ title: Haishan's Notes
 
 source_dir: notes
 output_dir: output
-theme_dir: themes
+theme_dir: themes/default
 
 # site
 root: /
