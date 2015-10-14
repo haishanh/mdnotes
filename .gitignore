@@ -3,3 +3,4 @@ mdnotes/*.pyc
 venv/
 notes/
 output/
+mdnotes/__pycache__/

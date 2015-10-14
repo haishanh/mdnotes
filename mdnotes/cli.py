@@ -3,7 +3,6 @@ import os
 import sys
 import shutil
 import argparse
-import BaseHTTPServer
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../'))
 from mdnotes.config import Config
@@ -29,12 +28,13 @@ def build():
     config, env = config.load_all()
     context = Context()
     context.update(config)
+    tags = {}
     # env = template_init()
     import glob
     mds = glob.glob(config['source_dir'] + '/*.md')
     notes = []
     for md in mds:
-        note = Note(md, config)
+        note = Note(md, config, tags)
         note.render(env, context.note)
         notes.append(note)
         print(note.title)
@@ -42,12 +42,6 @@ def build():
     index.render(env, context.index, notes)
     # move_res(config['theme_dir'] + '/resources', config['output_dir'])
 
-def run(server_class=BaseHTTPServer.HTTPServer,
-        handler_class=BaseHTTPServer.BaseHTTPRequestHandler):
-    server_address = ('', 8000)
-    httpd = server_class(server_address, handler_class)
-    print('Serving at 0.0.0.0:8000')
-    httpd.serve_forever()
 
 def serve():
     config = Config()
@@ -62,7 +56,7 @@ def serve():
     PORT = 8000
     Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     httpd = SocketServer.TCPServer(("", PORT), Handler)
-    print "serving at port", PORT
+    print("serving at port {0}".format(PORT))
     httpd.serve_forever()
 
 def cleanup():

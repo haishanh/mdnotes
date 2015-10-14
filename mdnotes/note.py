@@ -5,10 +5,11 @@ import yaml
 import markdown
 
 from mdnotes.utils import save_file, load_file, prt_exit
+from mdnotes.tag import Tag
 
 class Note(object):
 
-    def __init__(self, filename, config):
+    def __init__(self, filename, config, global_tags):
         # TODO do we have trouble if
         #      the filename is non ascii?
         bname = os.path.basename(filename)
@@ -19,16 +20,24 @@ class Note(object):
         self.title = ''
         self.article = ''
         self.toc = ''
-        self.tags = None
+        self.tags = [] 
+        ## Private
+        self._global_tags = global_tags
         self._config = config
 
     def set_tags(self, frontmatter):
+        gtags = self._global_tags
         for key in frontmatter:
             if key.strip().lower() == 'tags':
                 # public
-                self.tags = frontmatter[key]
-                return
-        self.tags = None
+                tags = frontmatter[key]
+                for tag in tags:
+                    if tag not in gtags:
+                        gtags[tag] = Tag(tag)
+                    this_tag = gtags[tag]
+                    this_tag.notes.append(self)
+                    this_tag.count += 1
+                    self.tags.append(this_tag)
 
     def set_title(self, frontmatter):
         for key in frontmatter:

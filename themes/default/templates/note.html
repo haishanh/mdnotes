@@ -12,7 +12,14 @@
 
 {% block content %}
 <article>
-  <header id="article-header"><h2>{{ note.title }}</h2></header>
+  <header id="article-header">
+    <h2>{{ note.title }}</h2>
+    <div>
+    {% for tag in note.tags %}
+    <a href="{{ tag.link }}">{{tag.name}} </a>
+    {% endfor %}
+    </div>
+  </header>
   {{ note.article }}
 </article>
 {% endblock %}
