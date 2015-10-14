@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+import os
+
+from mdnotes.utils import save_file
+
+class Index(object):
+    """
+    Model the index page
+    """
+    def __init__(self):
+        pass
+
+    def render(self, env, notes):
+        context = {}
+        context['notes'] = notes
+        template = env.get_template('index.html')
+        html = template.render(context)
+        save_file(os.path.join('../output', 'index.html'), html)

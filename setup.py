@@ -8,5 +8,9 @@ setup(
         'PyYAML>=3.11',    # frontmatter
         'Pygments>=2.0.2', # codehilite
         'Jinja2>=2.8'      # templating
-    ]
+    ],
+    entry_points='''
+        [console_scripts]
+        note=mdnotes.cli:main
+    '''
 )
