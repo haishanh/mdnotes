@@ -70,10 +70,10 @@ class Note(object):
             # strings in fm is unicode or ascii depending on whether
             # the object is an ascii string or not
             fm = yaml.load(self.frontmatter)
-            self.set_tags(fm)
-            self.set_title(fm)
         else:
-            return None
+            fm = {}
+        self.set_tags(fm)
+        self.set_title(fm)
 
     def gen_md(self):
         """
