@@ -16,6 +16,40 @@ def prt_exit(fmt):
     print(fmt)
     sys.exit(1)
 
+def ensure_dir(dir):
+    """
+    Ensure dir is exist
+     - create it if it does not exit
+     - immdiate exit if it can not be created
+    """
+    if not os.path.isdir(dir):
+        try:
+            os.makedirs(dir)
+        except:
+            prt_exit('DIR {0} not exist and can not be created'.format(dir))
+
+def ensure_path(path):
+    """
+    Ensure path' parent dirs exits
+    """
+    dir = os.path.dirname(path)
+    ensure_dir(dir)
+
+def safe_copy(src, dst):
+    if not os.path.exists(src):
+        prt_exit('Source file {0} not exist'.format(src))
+    if dst.endswith(os.path.sep):
+        ensure_dir(dst)
+    else:
+        ensure_path(dst)
+    # there is possiblity that the dst DO exist
+    # but we DO NOT have permission to write there
+    try:
+        shutil.copy(src, dst)
+    except:
+        prt_exit('Can not copy from {0} to {1}'.format(src, dst))
+
+
 def move_res(topdir, dst_dir, ignore_prefix='_'):
     topdir = topdir.rstrip(os.path.sep)
     assert os.path.isdir(topdir)

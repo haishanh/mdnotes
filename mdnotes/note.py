@@ -109,6 +109,7 @@ class Note(object):
         self._fm = self.parse_frontmatter_and_strip()
         self.article, self.toc = self.gen_md()
         context = {}
+        context['url_for'] = self._config['url_for']
         context['article'] = self.article
         context['toc'] = self.toc
         template = env.get_template('note.html')

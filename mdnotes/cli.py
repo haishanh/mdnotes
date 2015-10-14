@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../'))
 from mdnotes.config import Config
 from mdnotes.note import Note
 from mdnotes.index import Index
-from mdnotes.utils import move_res, prt_exit
+from mdnotes.utils import prt_exit
 
 def parse_arguments():
     description = 'mdnotes - turn your markdown files into\n' \
@@ -25,7 +25,7 @@ def parse_arguments():
 
 def build():
     config = Config()
-    config, env = config.load()
+    config, env = config.load_all()
     print('current dir is: ' + os.getcwd())
     # env = template_init()
     import glob
@@ -38,7 +38,7 @@ def build():
         print(note.title)
     index = Index(config)
     index.render(env, notes)
-    move_res(config['theme_dir'] + '/resources', config['output_dir'])
+    # move_res(config['theme_dir'] + '/resources', config['output_dir'])
 
 def run(server_class=BaseHTTPServer.HTTPServer,
         handler_class=BaseHTTPServer.BaseHTTPRequestHandler):
@@ -49,7 +49,7 @@ def run(server_class=BaseHTTPServer.HTTPServer,
 
 def serve():
     config = Config()
-    config, env = config.load()
+    config = config.load_config()
     if not os.path.isdir(config['output_dir']):
         print('Output files not found...building...')
         build()
@@ -65,7 +65,7 @@ def serve():
 
 def cleanup():
     config = Config()
-    config, env = config.load()
+    config = config.load_config()
     try:
         shutil.rmtree(config['output_dir'])
     except:
