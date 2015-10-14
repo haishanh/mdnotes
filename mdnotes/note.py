@@ -11,7 +11,9 @@ class Note(object):
     def __init__(self, filename, config):
         # TODO do we have trouble if
         #      the filename is non ascii?
-        self.md_filename = filename
+        bname = os.path.basename(filename)
+        self.name, ext = os.path.splitext(bname)
+        self.filename = filename
         self._config = config
 
     def set_tags(self, frontmatter):
@@ -28,7 +30,7 @@ class Note(object):
                 # public
                 self.title = frontmatter[key]
                 return
-        self.title, _ = os.path.splitext(self.md_filename)
+        self.title, _ = os.path.splitext(self.filename)
 
     def parse_frontmatter_and_strip(self):
         """
@@ -79,8 +81,11 @@ class Note(object):
         toc = getattr(md, 'toc', '')
         return html, toc
 
+    def set_link(self):
+        self.link = self._config['root'] + self.name
+
     def mk_path(self, html_dir):
-        _ = os.path.basename(self.md_filename)
+        _ = os.path.basename(self.filename)
         basename, ext = os.path.splitext(_)
         new_dir = html_dir + os.path.sep + basename
         html_path = new_dir + os.path.sep + 'index.html'
@@ -99,7 +104,7 @@ class Note(object):
         """
 
         # load markdown file
-        self._raw_content = load_file(self.md_filename)
+        self._raw_content = load_file(self.filename)
         # parse frontmatter and strip it
         self._fm = self.parse_frontmatter_and_strip()
         self.article, self.toc = self.gen_md()
@@ -110,3 +115,4 @@ class Note(object):
         html = template.render(context)
         target_path = self.mk_path(self._config['output_dir'])
         save_file(target_path, html)
+        self.set_link()

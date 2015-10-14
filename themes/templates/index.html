@@ -10,7 +10,7 @@
 {% block content %}
 {% for note in notes %}
 <div type="note-header">
-  <h2>{{ note.title }}</h2>
+  <h2><a href="{{ note.link }}">{{ note.title }}</a></h2>
   <div id="tags-in-header"></div>
 </div>
 {% endfor %}

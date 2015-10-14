@@ -14,6 +14,7 @@ def get_config_default():
     config['source_dir'] = 'notes'
     config['output_dir'] = 'output'
     config['theme_dir'] = 'themes'
+    config['root'] = '/'
     return config
 
 
