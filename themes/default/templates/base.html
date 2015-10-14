@@ -5,10 +5,12 @@
     <meta name="description" content="TODO">
     <meta name="author" content="TODO">
     <link rel="stylesheet" type="text/css" href="{{ url_for('main.css') }}">
+    {% block title %}
     <title>title</title>
+    {% endblock %}
   </head>
   <body>
-    <header id="masthead">Header</header>
+    <header id="masthead">{{ header_title }}</header>
     <div id="mainwrapper">
       <main>
         {% block left %}

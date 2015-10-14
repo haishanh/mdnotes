@@ -7,6 +7,7 @@ import BaseHTTPServer
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../'))
 from mdnotes.config import Config
+from mdnotes.context import Context
 from mdnotes.note import Note
 from mdnotes.index import Index
 from mdnotes.utils import prt_exit
@@ -26,18 +27,19 @@ def parse_arguments():
 def build():
     config = Config()
     config, env = config.load_all()
-    print('current dir is: ' + os.getcwd())
+    context = Context()
+    context.update(config)
     # env = template_init()
     import glob
     mds = glob.glob(config['source_dir'] + '/*.md')
     notes = []
     for md in mds:
         note = Note(md, config)
-        note.render(env)
+        note.render(env, context.note)
         notes.append(note)
         print(note.title)
     index = Index(config)
-    index.render(env, notes)
+    index.render(env, context.index, notes)
     # move_res(config['theme_dir'] + '/resources', config['output_dir'])
 
 def run(server_class=BaseHTTPServer.HTTPServer,

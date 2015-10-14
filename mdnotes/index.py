@@ -10,8 +10,7 @@ class Index(object):
     def __init__(self, config):
         self._config = config
 
-    def render(self, env, notes):
-        context = {}
+    def render(self, env, context, notes):
         context['url_for'] = self._config['url_for']
         context['notes'] = notes
         template = env.get_template('index.html')

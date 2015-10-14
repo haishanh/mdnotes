@@ -2,7 +2,6 @@
 
 import os
 import yaml
-import shutil
 import jinja2
 
 from mdnotes.utils import prt_exit, safe_copy

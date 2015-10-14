@@ -12,8 +12,14 @@ class Note(object):
         # TODO do we have trouble if
         #      the filename is non ascii?
         bname = os.path.basename(filename)
-        self.name, ext = os.path.splitext(bname)
+        name, ext = os.path.splitext(bname)
+        ## Public
+        self.name = name
         self.filename = filename
+        self.title = ''
+        self.article = ''
+        self.toc = ''
+        self.tags = None
         self._config = config
 
     def set_tags(self, frontmatter):
@@ -85,9 +91,7 @@ class Note(object):
         self.link = self._config['root'] + self.name
 
     def mk_path(self, html_dir):
-        _ = os.path.basename(self.filename)
-        basename, ext = os.path.splitext(_)
-        new_dir = html_dir + os.path.sep + basename
+        new_dir = html_dir + os.path.sep + self.name
         html_path = new_dir + os.path.sep + 'index.html'
         # if html_path exist, likely new_dir should have been created
         if not os.path.exists(html_path):
@@ -98,7 +102,7 @@ class Note(object):
         self.html_path = html_path
         return html_path
 
-    def render(self, env):
+    def render(self, env, context):
         """
         Rendering the template note.html
         """
@@ -108,12 +112,10 @@ class Note(object):
         # parse frontmatter and strip it
         self._fm = self.parse_frontmatter_and_strip()
         self.article, self.toc = self.gen_md()
-        context = {}
-        context['url_for'] = self._config['url_for']
-        context['article'] = self.article
-        context['toc'] = self.toc
+        self.set_link()
+        context['title'] = self.title + ' | ' + context['title']
+        context['note'] = self
         template = env.get_template('note.html')
         html = template.render(context)
         target_path = self.mk_path(self._config['output_dir'])
         save_file(target_path, html)
-        self.set_link()

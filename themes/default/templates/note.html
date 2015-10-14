@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
 {% block left %}
 <section id="left" class="side toc">
-{{ toc }}
+{{ note.toc }}
 </section>
 {% endblock %}
 
 {% block content %}
 <article>
-    <header id="article-header">Article header</header>
-    {{ article }}
+  <header id="article-header"><h2>{{ note.title }}</h2></header>
+  {{ note.article }}
 </article>
 {% endblock %}
