@@ -3,6 +3,7 @@ import os
 import sys
 import shutil
 import argparse
+import BaseHTTPServer
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../'))
 from mdnotes.config import Config
@@ -16,6 +17,8 @@ def parse_arguments():
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument('-b', '--build', action='store_true',
                         help='build notes')
+    parser.add_argument('-s', '--serve', action='store_true',
+                        help='start server')
     parser.add_argument('-c', '--cleanup', action='store_true',
                         help='clean up')
     return vars(parser.parse_args())
@@ -37,6 +40,29 @@ def build():
     index.render(env, notes)
     move_res(config['theme_dir'] + '/resources', config['output_dir'])
 
+def run(server_class=BaseHTTPServer.HTTPServer,
+        handler_class=BaseHTTPServer.BaseHTTPRequestHandler):
+    server_address = ('', 8000)
+    httpd = server_class(server_address, handler_class)
+    print('Serving at 0.0.0.0:8000')
+    httpd.serve_forever()
+
+def serve():
+    config = Config()
+    config, env = config.load()
+    if not os.path.isdir(config['output_dir']):
+        print('Output files not found...building...')
+        build()
+    os.chdir(config['output_dir'])
+
+    import SimpleHTTPServer
+    import SocketServer
+    PORT = 8000
+    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+    httpd = SocketServer.TCPServer(("", PORT), Handler)
+    print "serving at port", PORT
+    httpd.serve_forever()
+
 def cleanup():
     config = Config()
     config, env = config.load()
@@ -49,6 +75,8 @@ def main():
     args = parse_arguments()
     if args['build']:
         build()
+    if args['serve']:
+        serve()
     if args['cleanup']:
         cleanup()
 
