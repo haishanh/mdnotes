@@ -1,8 +1,10 @@
 from setuptools import setup
 
 setup(
+    name='mdnotes',
     author='HAN Haishan',
     author_email='haishanhan@gmail.com',
+    packages=['mdnotes'],
     install_requires=[
         'markdown>=2.6.2', # markdown
         'PyYAML>=3.11',    # frontmatter
