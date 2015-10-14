@@ -5,6 +5,7 @@ class Context(object):
         self.share = {}
         self.index = {}
         self.note = {}
+        self.tag = {}
 
     def update(self, config):
         """
@@ -12,6 +13,7 @@ class Context(object):
         share = self.share
         index = self.index
         note = self.note
+        tag = self.tag
 
         ## function
         share['url_for'] = config['url_for']
@@ -24,3 +26,4 @@ class Context(object):
 
         index.update(share)
         note.update(share)
+        tag.update(share)

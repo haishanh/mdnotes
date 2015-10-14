@@ -38,6 +38,8 @@ def build():
         note.render(env, context.note)
         notes.append(note)
         print(note.title)
+    for tag in tags:
+        tags[tag].render(env, context.tag)
     index = Index(config)
     index.render(env, context.index, notes)
     # move_res(config['theme_dir'] + '/resources', config['output_dir'])

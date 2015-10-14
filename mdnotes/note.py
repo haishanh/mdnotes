@@ -4,7 +4,8 @@ import os
 import yaml
 import markdown
 
-from mdnotes.utils import save_file, load_file, prt_exit
+from mdnotes.utils import save_file, load_file, \
+                          ensure_path, prt_exit
 from mdnotes.tag import Tag
 
 class Note(object):
@@ -33,7 +34,7 @@ class Note(object):
                 tags = frontmatter[key]
                 for tag in tags:
                     if tag not in gtags:
-                        gtags[tag] = Tag(tag)
+                        gtags[tag] = Tag(tag, self._config)
                     this_tag = gtags[tag]
                     this_tag.notes.append(self)
                     this_tag.count += 1
@@ -126,5 +127,9 @@ class Note(object):
         context['note'] = self
         template = env.get_template('note.html')
         html = template.render(context)
-        target_path = self.mk_path(self._config['output_dir'])
+        target_path = os.path.join(self._config['output_dir'],
+                                   self.name, 'index.html')
+        # target_path = self.mk_path(self._config['output_dir'])
+        ensure_path(target_path)
+
         save_file(target_path, html)
