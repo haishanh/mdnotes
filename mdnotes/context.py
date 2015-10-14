@@ -17,6 +17,7 @@ class Context(object):
 
         ## function
         share['url_for'] = config['url_for']
+        share['author'] = config['author']
 
         ## head
         share['title'] = config['title']
