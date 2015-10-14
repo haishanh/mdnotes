@@ -8,10 +8,11 @@ from mdnotes.utils import save_file, load_file, prt_exit
 
 class Note(object):
 
-    def __init__(self, filename):
+    def __init__(self, filename, config):
         # TODO do we have trouble if
         #      the filename is non ascii?
         self.md_filename = filename
+        self._config = config
 
     def set_tags(self, frontmatter):
         for key in frontmatter:
@@ -78,9 +79,7 @@ class Note(object):
         toc = getattr(md, 'toc', '')
         return html, toc
 
-    def mk_path(self):
-        # currenly
-        html_dir = '../output'
+    def mk_path(self, html_dir):
         _ = os.path.basename(self.md_filename)
         basename, ext = os.path.splitext(_)
         new_dir = html_dir + os.path.sep + basename
@@ -109,4 +108,5 @@ class Note(object):
         context['toc'] = self.toc
         template = env.get_template('note.html')
         html = template.render(context)
-        save_file(self.mk_path(), html)
+        target_path = self.mk_path(self._config['output_dir'])
+        save_file(target_path, html)

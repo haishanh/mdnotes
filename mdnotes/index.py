@@ -7,12 +7,13 @@ class Index(object):
     """
     Model the index page
     """
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self._config = config
 
     def render(self, env, notes):
         context = {}
         context['notes'] = notes
         template = env.get_template('index.html')
         html = template.render(context)
-        save_file(os.path.join('../output', 'index.html'), html)
+        output_dir = self._config['output_dir']
+        save_file(os.path.join(output_dir, 'index.html'), html)
