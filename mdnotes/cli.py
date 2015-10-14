@@ -41,7 +41,7 @@ def build():
     for tag in tags:
         tags[tag].render(env, context.tag)
     index = Index(config)
-    index.render(env, context.index, notes)
+    index.render(env, context.index, notes, tags=tags.values())
     # move_res(config['theme_dir'] + '/resources', config['output_dir'])
 
 

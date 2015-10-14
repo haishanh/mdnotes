@@ -9,6 +9,14 @@
 <section id="left" class="side toc">
 </section>
 #}
+<section id="left" class="side">
+  <select id="tagSelect">
+    {% for tag in tags %}
+    <option value="{{ tag.link }}">{{ tag.name }}({{ tag.count }})</option>
+    {% endfor %}
+  </select>
+</section>
+
 {% endblock %}
 
 {% block content %}
@@ -18,4 +26,8 @@
   <div id="tags-in-header"></div>
 </div>
 {% endfor %}
+{% endblock %}
+
+{% block afterfooter %}
+<script type="text/javascript" src="{{ url_for('select.js') }}"></script>
 {% endblock %}

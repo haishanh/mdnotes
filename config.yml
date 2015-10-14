@@ -5,4 +5,7 @@ output_dir: output
 theme_dir: themes/default
 
 # site
+#
+# if you are using a sub domain for example, http://example.com/notes
+# then root should be set to '/notes/' instead of '/'
 root: /

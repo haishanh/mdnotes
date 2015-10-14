@@ -19,9 +19,11 @@ class Note(object):
         self.name = name
         self.filename = filename
         self.title = ''
+        self.category = ''
         self.article = ''
         self.toc = ''
         self.tags = [] 
+        self.link = ''
         ## Private
         self._global_tags = global_tags
         self._config = config
@@ -32,6 +34,10 @@ class Note(object):
             if key.strip().lower() == 'tags':
                 # public
                 tags = frontmatter[key]
+                # it's possible people put 'tags:'
+                # in fm, but leave it blank
+                if tags is None:
+                    return
                 for tag in tags:
                     if tag not in gtags:
                         gtags[tag] = Tag(tag, self._config)
@@ -47,6 +53,14 @@ class Note(object):
                 self.title = frontmatter[key]
                 return
         self.title, _ = os.path.splitext(self.filename)
+
+    def set_category(self, frontmatter):
+        for key in frontmatter:
+            if key.strip().lower().startswith('cate'):
+                # public
+                self.category = frontmatter[key]
+                return
+        self.category = 'general'
 
     def parse_frontmatter_and_strip(self):
         """
@@ -74,6 +88,7 @@ class Note(object):
             fm = {}
         self.set_tags(fm)
         self.set_title(fm)
+        self.set_category(fm)
 
     def gen_md(self):
         """
@@ -98,7 +113,7 @@ class Note(object):
         return html, toc
 
     def set_link(self):
-        self.link = self._config['root'] + self.name
+        self.link = self._config['root'] + self.category + '/' + self.name
 
     def mk_path(self, html_dir):
         new_dir = html_dir + os.path.sep + self.name
@@ -128,7 +143,7 @@ class Note(object):
         template = env.get_template('note.html')
         html = template.render(context)
         target_path = os.path.join(self._config['output_dir'],
-                                   self.name, 'index.html')
+                                   self.category, self.name, 'index.html')
         # target_path = self.mk_path(self._config['output_dir'])
         ensure_path(target_path)
 
