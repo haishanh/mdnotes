@@ -1,0 +1,68 @@
+// by haishanh
+@tag-color: #0089e0;
+@tag-height: 40px;
+@tag-font-size: (@tag-height * 3/4);
+
+.box-shadow(@size, @c) {
+    @style: -(@size * 1/20) -(@size * 1/20) (@size * 1/10);
+    -web-kit-box-shadow: @style @c;
+    box-shadow: @style @c;
+}
+
+.tags {
+    margin: 20px 0;
+    padding: 0;
+    height: @tag-height;
+    //background-color: #ccc;
+    li {
+        height: @tag-height;
+        position: relative;
+        float: left;
+        list-style: none;
+        margin-left: @tag-font-size;
+        margin-bottom: (@tag-height * 0.2);
+        a {
+            color: #fff;
+            display: block;
+            padding: 0 (@tag-height * 0.1);
+            height: @tag-height;
+            font-size: @tag-font-size;
+            text-decoration: none;
+            background-color: @tag-color;
+            border-bottom-right-radius: (@tag-height * 0.1);
+            border-top-right-radius: (@tag-height * 0.1);
+            //position: absolute;
+            &:before {
+                content: "";
+                position: absolute;
+                width: 0;
+                height: 0;
+                left: -(@tag-height * 0.5);
+                border-top: (@tag-height * 0.5) solid transparent;
+                border-bottom: (@tag-height * 0.5) solid transparent;
+                border-right: (@tag-height * 0.5) solid @tag-color;
+            }
+            &:after {
+                content: "";
+                position: absolute;
+                background-color: #fff;
+                height: (@tag-height * 1/6);
+                width: (@tag-height * 1/6);
+                top: (@tag-height * 5/12);
+                left: -(@tag-height * 1/6);
+                border-radius: 50%;
+                .box-shadow(@tag-height, #004977);
+            }
+            &:hover {
+                background-color: lighten(@tag-color, 15%);
+                &:before {
+                    border-right: (@tag-height * 0.5) solid lighten(@tag-color, 15%);
+                }
+            }
+        }
+    }
+}
+
+.tags + * {
+    clear: both;
+}
