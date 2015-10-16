@@ -58,6 +58,7 @@ def serve():
     PORT = 8000
     Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     httpd = SocketServer.TCPServer(("", PORT), Handler)
+    httpd.allow_reuse_address = True
     print("serving at port {0}".format(PORT))
     httpd.serve_forever()
 
