@@ -3,13 +3,16 @@
 import os
 import yaml
 import jinja2
+import subprocess
 
 from mdnotes.utils import prt_exit, safe_copy
+
 
 def get_config_default():
     config = {}
     user = os.environ['LOGNAME']
-    if user == 'root': user = None
+    if user == 'root':
+        user = None
     config['title'] = user + '\'s Notes' if user else 'Notes'
     config['author'] = 'Jon Doe'
     config['source_dir'] = 'notes'
@@ -28,6 +31,7 @@ def get_config_from_file(config_file='config.yml'):
     config = yaml.load(config_raw)
     return config
 
+
 def template_init(path='../themes/templates'):
     """
     Jinja2 loader/env init
@@ -35,6 +39,30 @@ def template_init(path='../themes/templates'):
     """
     loader = jinja2.FileSystemLoader(path)
     return jinja2.Environment(loader=loader)
+
+
+def compile_less(path):
+    """
+    Using less.js to compile main.less to main.css
+    """
+    infile = os.path.join(path, 'main.less')
+    outfile = os.path.join(path, 'main.css')
+    if os.path.isfile(infile):
+        which = subprocess.Popen('which less', shell=True, stdout=subprocess.PIPE,
+                           stderr=subprocess.PIPE)
+        which.wait()
+        if which.returncode != 0:
+            print('Warning: less.js compiler not found')
+            if not os.path.isfile(outfile):
+                prt_exit('Can not build main.css')
+            return
+        cmd = 'lessc ' + infile + ' ' + outfile
+        lessc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
+                           stderr=subprocess.PIPE)
+        lessc.wait()
+        if lessc.returncode != 0:
+            prt_exit('Can not compile {0} to {1}'.format(infile, outfile))
+
 
 class Config(object):
     def __init__(self):
@@ -75,7 +103,8 @@ class Config(object):
                 if dir.startswith(ignore_prefix):
                     dirs.remove(dir)
             for file in files:
-                if file.startswith(ignore_prefix): continue
+                if file.startswith(ignore_prefix):
+                    continue
                 src_path = os.path.join(root, file)
                 dst_sub = src_path[len(topdir):]
                 # dst_sub should have os.path.sep prefixed
@@ -86,6 +115,7 @@ class Config(object):
     def load_all(self):
         config = self.load_config()
         env = template_init(os.path.join(config['theme_dir'], 'templates'))
+        compile_less(os.path.join(config['theme_dir'], 'resources', 'css'))
         self.load_resource()
         config['url_for'] = self.url_for
         return config, env

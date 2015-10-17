@@ -23,7 +23,15 @@
 {% for note in notes %}
 <div type="note-header">
   <h2><a href="{{ note.link }}">{{ note.title }}</a></h2>
-  <div id="tags-in-header"></div>
+  <div id="tags-in-header">
+    <ul class="tags">
+    {% for tag in  note.tags %}
+    <li>
+      <a href="{{ tag.link }}">{{ tag.name }}</a>
+    </li>
+    {% endfor %}
+    </ul>
+  </div>
 </div>
 {% endfor %}
 {% endblock %}
