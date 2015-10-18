@@ -1,6 +1,10 @@
 title: Haishan's Notes
 author: haishanh
 
+menu:
+  Home: /
+  About: http://hanhaishan.com/about
+
 source_dir: notes
 output_dir: output
 theme_dir: themes/default

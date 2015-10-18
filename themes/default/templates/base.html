@@ -10,7 +10,15 @@
     {% endblock %}
   </head>
   <body>
-    <header id="masthead">{{ header_title }}</header>
+    <header id="masthead">{{ header_title }}
+    <nav>
+      <ul>
+      {% for key in menu.keys() %}
+      <li><a href="{{ menu[key] }}">{{ key }}</a></li>
+      {% endfor %}
+      </ul>
+    </nav>
+    </header>
     <div id="mainwrapper">
       <main>
         {% block left %}

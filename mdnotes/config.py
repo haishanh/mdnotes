@@ -15,6 +15,7 @@ def get_config_default():
         user = None
     config['title'] = user + '\'s Notes' if user else 'Notes'
     config['author'] = 'Jon Doe'
+    config['menu'] = {}
     config['source_dir'] = 'notes'
     config['output_dir'] = 'output'
     config['theme_dir'] = 'themes'

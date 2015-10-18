@@ -23,6 +23,7 @@ class Context(object):
         share['title'] = config['title']
 
         ## body
+        share['menu'] = config['menu']
         share['header_title'] = config['title']
 
         index.update(share)

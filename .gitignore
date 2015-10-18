@@ -4,3 +4,4 @@ venv/
 notes/
 output/
 mdnotes/__pycache__/
+themes/default/resources/js/bootstrap-3.3.5-dist
