@@ -20,6 +20,19 @@ nav {
 article {
   header {
     color: #4c6dd1;
+    h2 {
+      margin-bottom: 8px;
+    }
+    .tag-bar {
+      a {
+          text-decoration: none;
+          border: 1px solid #ccc;
+          margin: 0 2px;
+          padding: 2px;
+          border-radius: 5px;
+          color: #ccc;
+      } 
+    }
   }
   a {
     color: @color-base;
@@ -66,7 +79,7 @@ main {
 
 #left {
   float: left;
-  width: 25%;
+  position: fixed;
   div {
     margin-top: 15px;
   }
@@ -75,6 +88,8 @@ main {
 #middle {
   float: left;
   width: 75%;
+  margin: 0 auto;
+  padding-left: 25%;
 }
 
 a.headerlink {
