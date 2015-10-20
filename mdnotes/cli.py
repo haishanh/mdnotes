@@ -51,16 +51,33 @@ def serve():
     if not os.path.isdir(config['output_dir']):
         print('Output files not found...building...')
         build()
-    os.chdir(config['output_dir'])
 
-    import SimpleHTTPServer
-    import SocketServer
-    PORT = 8000
-    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-    httpd = SocketServer.TCPServer(("", PORT), Handler)
-    httpd.allow_reuse_address = True
-    print("serving at port {0}".format(PORT))
-    httpd.serve_forever()
+    port = 8000
+    host = '0.0.0.0'
+    try:
+        from tornado import ioloop
+        from tornado import web
+        application = web.Application([
+            (r"/(.*)", web.StaticFileHandler, {
+                "path": config['output_dir'],
+                "default_filename": "index.html"
+            })
+        ])
+        application.listen(port=port, address=host)
+        try:
+            ioloop.IOLoop.instance().start()
+        except KeyboardInterrupt:
+            print('Stopping server...')
+    except:
+        import SimpleHTTPServer
+        import SocketServer
+        os.chdir(config['output_dir'])
+        Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+        httpd = SocketServer.TCPServer((host, port), Handler)
+        httpd.allow_reuse_address = True
+        print('Running at: http://{0}:{1}/'.format(host, port))
+        httpd.serve_forever()
+
 
 def cleanup():
     config = Config()
