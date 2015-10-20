@@ -141,8 +141,8 @@ class Note(object):
                       'toc', 'smarty', 'sane_lists', 'wikilinks']
         # TODO
         extension_configs = {'toc': {
-                                    'anchorlink': True,
-                                    'permalink': True
+                                    'anchorlink': False,
+                                    'permalink': False
                                 }
                             }
         output_format = 'html5'

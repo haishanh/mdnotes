@@ -34,12 +34,19 @@ article {
       } 
     }
   }
+  h1, h2, h3, h4, h5, h6, h7 {
+    position: relative;
+  }
   a {
     color: @color-base;
     text-decoration: none;
   }
-  .headerlink {
+  .header-anchor {
     display: none;
+    position: absolute;
+    left: -15px;
+    padding-right: 15px;
+    color: red;
   }
 }
 
