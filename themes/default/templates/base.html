@@ -10,7 +10,9 @@
     {% endblock %}
   </head>
   <body>
-    <header id="masthead">{{ header_title }}
+    <header id="masthead">
+    <h2>{{ header_title }}</h2>
+    <img src="{{ url_for('notes-logo0.png') }}" class="logo" alt="mdnotes logo">
     <nav>
       <ul>
       {% for key in menu.keys() %}
