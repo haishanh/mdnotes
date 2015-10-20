@@ -46,7 +46,10 @@ article {
     position: absolute;
     left: -15px;
     padding-right: 15px;
-    color: red;
+    color: desaturate(@red, 30%);
+    &:hover {
+      color: @red;
+    }
   }
 }
 
