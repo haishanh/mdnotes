@@ -64,6 +64,7 @@ def serve():
             })
         ])
         application.listen(port=port, address=host)
+        print('Running at: http://{0}:{1}/'.format(host, port))
         try:
             ioloop.IOLoop.instance().start()
         except KeyboardInterrupt:

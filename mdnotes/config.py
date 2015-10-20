@@ -49,8 +49,9 @@ def compile_less(path):
     infile = os.path.join(path, 'main.less')
     outfile = os.path.join(path, 'main.css')
     if os.path.isfile(infile):
-        which = subprocess.Popen('which less', shell=True, stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE)
+        which = subprocess.Popen('which less', shell=True,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE)
         which.wait()
         if which.returncode != 0:
             print('Warning: less.js compiler not found')
@@ -59,10 +60,31 @@ def compile_less(path):
             return
         cmd = 'lessc ' + infile + ' ' + outfile
         lessc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE)
+                                 stderr=subprocess.PIPE)
         lessc.wait()
         if lessc.returncode != 0:
             prt_exit('Can not compile {0} to {1}'.format(infile, outfile))
+
+
+def generate_codehilite(path):
+    """
+    Generate pygments stylesheet
+    """
+    outfile = os.path.join(path, 'pygments.less')
+    style = 'colorful'
+    cmd = 'pygmentize -S ' + style + \
+          ' -f html -a .codehilite > ' + \
+          outfile
+    # TODO Judge if pygments.less changed?
+    which = subprocess.Popen('which pygmentize', shell=True,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE)
+    which.wait()
+    pygmentize = subprocess.Popen(cmd, shell=True,
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+    pygmentize.wait()
+    # TODO
 
 
 class Config(object):
@@ -116,6 +138,7 @@ class Config(object):
     def load_all(self):
         config = self.load_config()
         env = template_init(os.path.join(config['theme_dir'], 'templates'))
+        generate_codehilite(os.path.join(config['theme_dir'], 'resources', 'css'))
         compile_less(os.path.join(config['theme_dir'], 'resources', 'css'))
         self.load_resource()
         config['url_for'] = self.url_for
