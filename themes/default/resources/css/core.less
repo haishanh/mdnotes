@@ -39,18 +39,20 @@ article {
   h1, h2, h3, h4, h5, h6, h7 {
     position: relative;
   }
-  a {
-    color: @color-base;
-    text-decoration: none;
-  }
+  //a {
+  //  color: @color-base;
+  //  text-decoration: none;
+  //}
   .header-anchor {
     display: none;
     position: absolute;
     left: -15px;
     padding-right: 15px;
     color: desaturate(@red, 30%);
+    text-decoration: none;
     &:hover {
       color: @red;
+      text-decoration: none;
     }
   }
   img {
@@ -71,6 +73,16 @@ article {
     border-bottom-color: #bbb;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb;
+  }
+  blockquote {
+    border-left: 5px solid #ddd;
+    padding: 1px 5px 1px 15px;
+  }
+  a {
+    color: @blue;
+    &:hover {
+      color: @red;
+    }
   }
 }
 
