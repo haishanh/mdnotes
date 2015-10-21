@@ -20,6 +20,7 @@ def get_config_default():
     config['output_dir'] = 'output'
     config['theme_dir'] = 'themes'
     config['root'] = '/'
+    config['highlight_style'] = 'friendly'
     return config
 
 
@@ -66,12 +67,11 @@ def compile_less(path):
             prt_exit('Can not compile {0} to {1}'.format(infile, outfile))
 
 
-def generate_codehilite(path):
+def generate_codehilite(path, style):
     """
     Generate pygments stylesheet
     """
     outfile = os.path.join(path, 'pygments.less')
-    style = 'colorful'
     cmd = 'pygmentize -S ' + style + \
           ' -f html -a .codehilite > ' + \
           outfile
@@ -84,7 +84,8 @@ def generate_codehilite(path):
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
     pygmentize.wait()
-    # TODO
+    if pygmentize.returncode != 0:
+        prt_exit('Can not generate style {0}'.format(outfile))
 
 
 class Config(object):
@@ -138,7 +139,9 @@ class Config(object):
     def load_all(self):
         config = self.load_config()
         env = template_init(os.path.join(config['theme_dir'], 'templates'))
-        generate_codehilite(os.path.join(config['theme_dir'], 'resources', 'css'))
+        generate_codehilite(os.path.join(config['theme_dir'], 'resources',
+                                         'css'),
+                            config['highlight_style'])
         compile_less(os.path.join(config['theme_dir'], 'resources', 'css'))
         self.load_resource()
         config['url_for'] = self.url_for

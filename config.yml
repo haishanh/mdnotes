@@ -14,3 +14,8 @@ theme_dir: themes/default
 # if you are using a sub domain for example, http://example.com/notes
 # then root should be set to '/notes/' instead of '/'
 root: /
+
+# code highlight style
+# avaliable styles:
+# ['manni', 'igor', 'xcode', 'vim', 'autumn', 'vs', 'rrt', 'native', 'perldoc', 'borland', 'tango', 'emacs', 'friendly', 'monokai', 'paraiso-dark', 'colorful', 'murphy', 'bw', 'pastie', 'paraiso-light', 'trac', 'default', 'fruity']
+highlight_style: paraiso-dark 
