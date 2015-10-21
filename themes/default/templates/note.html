@@ -6,7 +6,10 @@
 
 {% block left %}
 <section id="left" class="side">
-{{ note.toc }}
+<div id="toc">
+  <div class="title">IN THIS PAGE</div>
+  {{ note.toc }}
+</div>
 <div><a href="#">Download source</a></div>
 </section>
 {% endblock %}

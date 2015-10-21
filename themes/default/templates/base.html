@@ -24,7 +24,7 @@
     <div id="mainwrapper">
       <main>
         {% block left %}
-        <section id="left" class="side toc">
+        <section id="left" class="side">
         {{ toc }}
         </section>
         {% endblock %}
@@ -36,6 +36,7 @@
     </div>
     <footer><p>&copy; Copyright 2015 {{ author }}</p></footer>
     {% block afterfooter %}
+    <script type="text/javascript" src="{{ url_for('jquery-1.11.3.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('select.js') }}"></script>
     {% endblock %}
   </body>

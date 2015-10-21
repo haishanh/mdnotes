@@ -21,5 +21,12 @@ will yield:
 You can place any world after "!!!", but currently, only `note`, `warning`, and `danger` will be properly styled. 
 
 
+### Write in markdown
+
+There are many tutorials or blog posts tell you the syntax about markdown. By here are some sugars in `mdnotes`:
+
+<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>
+
+
 [mdnotes]: TODO
 [admonition]: https://pythonhosted.org/Markdown/extensions/admonition.html

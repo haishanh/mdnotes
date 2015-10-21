@@ -14,6 +14,17 @@ function addAnchors() {
   }
 }
 
+function stickToc() {
+  var toc = $("#toc");
+  var window_top = $(window).scrollTop();
+  var left_top = $("#left").offset().top;
+  if (window_top > left_top) {
+    toc.addClass("fixed");
+  } else {
+    toc.removeClass("fixed");
+  }
+}
+
 (function () {
   var tagSelect = document.getElementById('tagSelect');
   if (tagSelect) {
@@ -21,4 +32,11 @@ function addAnchors() {
   }
 
   addAnchors();
+  //$(window).scroll(stickToc);
 })();
+
+
+$(function () {
+  $(window).scroll(stickToc);
+  stickToc();
+});
