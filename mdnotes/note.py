@@ -110,6 +110,9 @@ class Note(object):
         assert self._raw_content
         raw_content = self._raw_content
 
+        if raw_content.startswith('---'):
+            raw_content = raw_content[3:]
+
         tridash_re = re.compile('^-{3,5}\s*$', re.MULTILINE)
         m = tridash_re.search(raw_content)
         if m:
