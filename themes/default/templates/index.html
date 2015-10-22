@@ -20,18 +20,20 @@
 {% endblock %}
 
 {% block content %}
+<section id="middle" class="index">
 {% for note in notes %}
-<div type="note-header">
+<div class="note-header">
   <h2><a href="{{ note.link }}">{{ note.title }}</a></h2>
-  <div id="tags-in-header">
-    <ul class="tags">
-    {% for tag in  note.tags %}
+  {% if note.tags %}
+  <ul class="tags">
+  {% for tag in  note.tags %}
     <li>
       <a href="{{ tag.link }}">{{ tag.name }}</a>
     </li>
-    {% endfor %}
-    </ul>
-  </div>
+  {% endfor %}
+  </ul>
+  {% endif %}
 </div>
 {% endfor %}
+</section>
 {% endblock %}
