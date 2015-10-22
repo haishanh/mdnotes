@@ -9,7 +9,7 @@ from mdnotes.config import Config
 from mdnotes.context import Context
 from mdnotes.note import Note
 from mdnotes.index import Index
-from mdnotes.utils import prt_exit
+from mdnotes.utils import prt_exit, md_files_generator
 
 def parse_arguments():
     description = 'mdnotes - turn your markdown files into\n' \
@@ -30,8 +30,7 @@ def build():
     context.update(config)
     tags = {}
     # env = template_init()
-    import glob
-    mds = glob.glob(config['source_dir'] + '/*.md')
+    mds = md_files_generator(config['source_dir'])
     notes = []
     for md in mds:
         note = Note(md, config, tags)

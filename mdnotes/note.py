@@ -54,11 +54,17 @@ class Note(object):
     def __init__(self, filename, config, global_tags):
         # TODO do we have trouble if
         #      the filename is non ascii?
-        bname = os.path.basename(filename)
-        name, ext = os.path.splitext(bname)
+        basename = os.path.basename(filename)
+        name, ext = os.path.splitext(basename)
         # Public
+
+        # example:
+        #   self.path = notes/test-note.md
+        #   self.filename = test-note.md
+        #   self.name = test-note
         self.name = name
-        self.filename = filename
+        self.path = filename
+        self.filename = basename
         self.title = ''
         self.category = ''
         self.article = ''
@@ -93,15 +99,22 @@ class Note(object):
                 # public
                 self.title = frontmatter[key]
                 return
-        self.title, _ = os.path.splitext(self.filename)
+        # TODO non [alphnum] should be converted to "-"
+        self.title = self.name
 
     def set_category(self, frontmatter):
-        for key in frontmatter:
-            if key.strip().lower().startswith('cate'):
-                # public
-                self.category = frontmatter[key]
-                return
-        self.category = 'general'
+        """
+        The level1 dir name will be used as category
+        """
+        segments = self.path.split(os.path.sep)
+        if len(segments) > 2:
+            self.category = segments[1]
+        # for key in frontmatter:
+        #     if key.strip().lower().startswith('cate'):
+        #         # public
+        #         self.category = frontmatter[key]
+        #         return
+        # self.category = 'general'
 
     def parse_frontmatter_and_strip(self):
         """
@@ -159,7 +172,10 @@ class Note(object):
         return html, toc
 
     def set_link(self):
-        self.link = self._config['root'] + self.category + '/' + self.name
+        if self.category:
+            self.link = self._config['root'] + self.category + '/' + self.name
+        else:
+            self.link = self._config['root'] + self.name
 
     def mk_path(self, html_dir):
         new_dir = html_dir + os.path.sep + self.name
@@ -179,7 +195,7 @@ class Note(object):
         """
 
         # load markdown file
-        self._raw_content = load_file(self.filename)
+        self._raw_content = load_file(self.path)
         # parse frontmatter and strip it
         self._fm = self.parse_frontmatter_and_strip()
         self.article, self.toc = self.gen_md()

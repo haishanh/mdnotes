@@ -9,6 +9,10 @@ from mdnotes.utils import prt_exit, safe_copy
 
 
 def get_config_default():
+    """
+    Initialize a basic workable config
+    This config will be updated by subsequent procedures
+    """
     config = {}
     user = os.environ['LOGNAME']
     if user == 'root':
@@ -24,6 +28,14 @@ def get_config_default():
     return config
 
 
+def normalize_config(config):
+    """
+    remove trailing seperator for dir relate config
+    """
+    for key in ['source_dir', 'output_dir', 'theme_dir']:
+        config[key] = config[key].rstrip(os.path.sep)
+
+
 def get_config_from_file(config_file='config.yml'):
     try:
         with open(config_file) as f:
@@ -31,6 +43,7 @@ def get_config_from_file(config_file='config.yml'):
     except:
         prt_exit('Can not open {0}'.format(config_file))
     config = yaml.load(config_raw)
+    normalize_config(config)
     return config
 
 

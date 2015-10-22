@@ -50,6 +50,19 @@ def safe_copy(src, dst):
         prt_exit('Can not copy from {0} to {1}'.format(src, dst))
 
 
+def md_files_generator(topdir, ignore_prefix='_'):
+    assert os.path.isdir(topdir)
+    for root, dirs, files in os.walk(topdir):
+        for dir in dirs:
+            if dir.startswith(ignore_prefix):
+                dirs.remove(dir)
+        for file in files:
+            if file.startswith(ignore_prefix) or not file.endswith('.md'):
+                continue
+            mdfile =  os.path.join(root, file)
+            yield mdfile
+
+
 def move_res(topdir, dst_dir, ignore_prefix='_'):
     topdir = topdir.rstrip(os.path.sep)
     assert os.path.isdir(topdir)
