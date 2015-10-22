@@ -21,6 +21,22 @@ will yield:
 You can place any world after "!!!", but currently, only `note`, `warning`, and `danger` will be properly styled. 
 
 
+### Configuration
+
+The global config file is `config.yml`
+
+```
+TODO example
+```
+
+#### source_dir
+
+`source_dir` is the the path where you put your markdown files. Please be noted, directory place directly in `source_dir` will be treated as kind of category. So if your `source_dir` is `notes`
+
+ * The url of the file `notes/dir1/dir2/this-is-a-test.md` will be '<yoursite.com>/<root_dir>/dir1/this-is-a-test'
+ * The url of the file `notes/dir1/this-is-a-test.md` will be '<yoursite.com>/<root_dir>/dir1/this-is-a-test'
+ * The url of the file `notes/this-is-a-test.md` will be '<yoursite.com>/<root_dir>/this-is-a-test'
+
 ### Write in markdown
 
 There are many tutorials or blog posts tell you the syntax about markdown. By here are some sugars in `mdnotes`:
