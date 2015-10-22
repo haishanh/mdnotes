@@ -139,11 +139,26 @@ article {
 
 
 #masthead {
-  width: @main-width;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
   .logo {
     max-width: 300px;
+  }
+  .inner {
+    width: @main-width;
+    margin: 0 auto;
+    nav {
+      a {
+        text-decoration: none;
+        padding: 3px;
+        &:hover {
+          color: #fff;
+          background-color: #555;
+          border-radius: 5px;
+        }
+      }
+    }
   }
 }
 

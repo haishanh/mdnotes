@@ -182,7 +182,6 @@ class Note(object):
         dst_dir = os.path.join(self._config['output_dir'], self.category)
         if not dst_dir.endswith(os.path.sep):
             dst_dir += os.path.sep
-        print('src: {0} / dst: {1}'.format(self.path, dst_dir))
         safe_copy(self.path, dst_dir)
         if self.category:
             self.source = self._config['root'] + self.category + '/' + \

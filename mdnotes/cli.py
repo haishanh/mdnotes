@@ -32,11 +32,12 @@ def build():
     # env = template_init()
     mds = md_files_generator(config['source_dir'])
     notes = []
+    print('Building notes...')
     for md in mds:
         note = Note(md, config, tags)
         note.render(env, context.note)
         notes.append(note)
-        print(note.title)
+        print( ' ' * 10 + note.title)
     for tag in tags:
         tags[tag].render(env, context.tag)
     index = Index(config)
