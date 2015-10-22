@@ -10,7 +10,9 @@
   <div class="title">In this page</div>
   {{ note.toc }}
 </div>
-<div><a href="#">Download source</a></div>
+{% if note.source %}
+<div><a href="{{ note.source }}">View source</a></div>
+{% endif %}
 </section>
 {% endblock %}
 

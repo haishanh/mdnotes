@@ -5,7 +5,7 @@ import yaml
 import markdown
 
 from mdnotes.utils import save_file, load_file, \
-                          ensure_path, prt_exit
+                          ensure_path, prt_exit, safe_copy
 from mdnotes.tag import Tag
 
 
@@ -71,6 +71,7 @@ class Note(object):
         self.toc = ''
         self.tags = []
         self.link = ''
+        self.source = ''
         # Private
         self._global_tags = global_tags
         self._config = config
@@ -176,6 +177,18 @@ class Note(object):
             self.link = self._config['root'] + self.category + '/' + self.name
         else:
             self.link = self._config['root'] + self.name
+        # TODO to be removed from here
+        # set source
+        dst_dir = os.path.join(self._config['output_dir'], self.category)
+        if not dst_dir.endswith(os.path.sep):
+            dst_dir += os.path.sep
+        print('src: {0} / dst: {1}'.format(self.path, dst_dir))
+        safe_copy(self.path, dst_dir)
+        if self.category:
+            self.source = self._config['root'] + self.category + '/' + \
+                          self.filename
+        else:
+            self.source = self._config['root'] + self.filename
 
     def mk_path(self, html_dir):
         new_dir = html_dir + os.path.sep + self.name
