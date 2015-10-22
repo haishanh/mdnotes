@@ -4,6 +4,7 @@ import os
 
 from mdnotes.utils import ensure_path, save_file
 
+
 class Tag(object):
     def __init__(self, name, config):
         # name could be unicode
@@ -21,6 +22,7 @@ class Tag(object):
         html = template.render(context)
 
         target_path = os.path.join(self._config['output_dir'],
+                                   self._config['root'].strip('/'),
                                    'tags', self.name, 'index.html')
         ensure_path(target_path)
 

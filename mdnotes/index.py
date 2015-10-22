@@ -3,6 +3,7 @@ import os
 
 from mdnotes.utils import save_file
 
+
 class Index(object):
     """
     Model the index page
@@ -17,4 +18,6 @@ class Index(object):
         template = env.get_template('index.html')
         html = template.render(context)
         output_dir = self._config['output_dir']
-        save_file(os.path.join(output_dir, 'index.html'), html)
+        save_file(os.path.join(output_dir,
+                               self._config['root'].strip('/'),
+                               'index.html'), html)

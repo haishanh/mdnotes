@@ -30,10 +30,19 @@ def get_config_default():
 
 def normalize_config(config):
     """
-    remove trailing seperator for dir relate config
+    Normalize config in case of error config.yml
+
+        - remove trailing seperator for dir related config
+        - config['root'] should be '/' or '/notes/' style
     """
+
     for key in ['source_dir', 'output_dir', 'theme_dir']:
         config[key] = config[key].rstrip(os.path.sep)
+
+    if not config['root'].endswith('/'):
+        config['root'] += '/'
+    if not config['root'].startswith('/'):
+        config['root'] = '/' + config['root']
 
 
 def get_config_from_file(config_file='config.yml'):
@@ -128,8 +137,8 @@ class Config(object):
         assert 'theme_dir' in config
         assert 'output_dir' in config
 
-        topdir = config['theme_dir'] + '/resources'
-        dst_dir = config['output_dir']
+        topdir = os.path.join(config['theme_dir'], 'resources')
+        dst_dir = os.path.join(config['output_dir'], config['root'].strip('/'))
 
         topdir = topdir.rstrip(os.path.sep)
         assert os.path.isdir(topdir)
@@ -147,7 +156,7 @@ class Config(object):
                 # dst_sub should have os.path.sep prefixed
                 dst_path = dst_dir + dst_sub
                 safe_copy(src_path, dst_path)
-                self._files[file] = dst_sub
+                self._files[file] = config['root'].rstrip('/') + dst_sub
 
     def load_all(self):
         config = self.load_config()

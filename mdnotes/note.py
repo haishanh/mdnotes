@@ -179,7 +179,9 @@ class Note(object):
             self.link = self._config['root'] + self.name
         # TODO to be removed from here
         # set source
-        dst_dir = os.path.join(self._config['output_dir'], self.category)
+        dst_dir = os.path.join(self._config['output_dir'],
+                               self._config['root'].strip('/'),
+                               self.category)
         if not dst_dir.endswith(os.path.sep):
             dst_dir += os.path.sep
         safe_copy(self.path, dst_dir)
@@ -217,6 +219,7 @@ class Note(object):
         template = env.get_template('note.html')
         html = template.render(context)
         target_path = os.path.join(self._config['output_dir'],
+                                   self._config['root'].strip('/'),
                                    self.category, self.name, 'index.html')
         # target_path = self.mk_path(self._config['output_dir'])
         ensure_path(target_path)
