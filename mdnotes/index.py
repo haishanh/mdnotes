@@ -11,9 +11,10 @@ class Index(object):
     def __init__(self, config):
         self._config = config
 
-    def render(self, env, context, notes, tags):
+    def render(self, env, context, notes, categories, tags):
         context['url_for'] = self._config['url_for']
         context['notes'] = notes
+        context['categories'] = categories
         context['tags'] = tags
         template = env.get_template('index.html')
         html = template.render(context)

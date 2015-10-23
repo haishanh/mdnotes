@@ -7,6 +7,7 @@ import markdown
 from mdnotes.utils import save_file, load_file, \
                           ensure_path, prt_exit, safe_copy
 from mdnotes.tag import Tag
+from mdnotes.category import Category
 
 
 def process_toc(toc):
@@ -51,7 +52,7 @@ def process_toc(toc):
 
 class Note(object):
 
-    def __init__(self, filename, config, global_tags):
+    def __init__(self, filename, config, global_tags, global_categories):
         # TODO do we have trouble if
         #      the filename is non ascii?
         basename = os.path.basename(filename)
@@ -66,7 +67,7 @@ class Note(object):
         self.path = filename
         self.filename = basename
         self.title = ''
-        self.category = ''
+        self.category = None
         self.article = ''
         self.toc = ''
         self.tags = []
@@ -74,6 +75,7 @@ class Note(object):
         self.source = ''
         # Private
         self._global_tags = global_tags
+        self._global_categories = global_categories
         self._config = config
 
     def set_tags(self, frontmatter):
@@ -107,9 +109,20 @@ class Note(object):
         """
         The level1 dir name will be used as category
         """
+        gcates = self._global_categories
+        cate_name = ''
         segments = self.path.split(os.path.sep)
         if len(segments) > 2:
-            self.category = segments[1]
+            cate_name = segments[1].lower()
+        else:
+            cate_name = 'uncategorized'
+        if cate_name not in gcates:
+            gcates[cate_name] = Category(name=cate_name, config=self._config)
+        this_cate = gcates[cate_name]
+        this_cate.notes.append(self)
+        this_cate.count += 1
+        self.category = this_cate
+
         # for key in frontmatter:
         #     if key.strip().lower().startswith('cate'):
         #         # public
@@ -120,6 +133,8 @@ class Note(object):
     def parse_frontmatter_and_strip(self):
         """
         Parse frontmatter and strip it
+
+        tags / title / category will be set in this method
         """
         assert self._raw_content
         raw_content = self._raw_content
@@ -173,20 +188,25 @@ class Note(object):
         return html, toc
 
     def set_link(self):
-        if self.category:
-            self.link = self._config['root'] + self.category + '/' + self.name
+        cate = self.category.name
+        if cate is not 'uncategorized':
+            self.link = self._config['root'] + cate + '/' + self.name
         else:
             self.link = self._config['root'] + self.name
         # TODO to be removed from here
         # set source
-        dst_dir = os.path.join(self._config['output_dir'],
-                               self._config['root'].strip('/'),
-                               self.category)
+        if cate is not 'uncategorized':
+            dst_dir = os.path.join(self._config['output_dir'],
+                                   self._config['root'].strip('/'),
+                                   cate)
+        else:
+            dst_dir = os.path.join(self._config['output_dir'],
+                                   self._config['root'].strip('/'))
         if not dst_dir.endswith(os.path.sep):
             dst_dir += os.path.sep
         safe_copy(self.path, dst_dir)
-        if self.category:
-            self.source = self._config['root'] + self.category + '/' + \
+        if cate is not 'uncategorized':
+            self.source = self._config['root'] + cate + '/' + \
                           self.filename
         else:
             self.source = self._config['root'] + self.filename
@@ -218,9 +238,13 @@ class Note(object):
         context['note'] = self
         template = env.get_template('note.html')
         html = template.render(context)
+        if self.category.name is not 'uncategorized':
+            cate = self.category.name
+        else:
+            cate = ''
         target_path = os.path.join(self._config['output_dir'],
                                    self._config['root'].strip('/'),
-                                   self.category, self.name, 'index.html')
+                                   cate, self.name, 'index.html')
         # target_path = self.mk_path(self._config['output_dir'])
         ensure_path(target_path)
 

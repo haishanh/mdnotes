@@ -6,6 +6,7 @@ class Context(object):
         self.index = {}
         self.note = {}
         self.tag = {}
+        self.category = {}
 
     def update(self, config):
         """
@@ -14,6 +15,7 @@ class Context(object):
         index = self.index
         note = self.note
         tag = self.tag
+        cate = self.category
 
         ## function
         share['url_for'] = config['url_for']
@@ -29,3 +31,4 @@ class Context(object):
         index.update(share)
         note.update(share)
         tag.update(share)
+        cate.update(share)

@@ -29,19 +29,23 @@ def build():
     context = Context()
     context.update(config)
     tags = {}
+    categories = {}
     # env = template_init()
     mds = md_files_generator(config['source_dir'])
     notes = []
     print('Building notes...')
     for md in mds:
-        note = Note(md, config, tags)
+        note = Note(md, config, tags, categories)
         note.render(env, context.note)
         notes.append(note)
         print( ' ' * 10 + note.title)
     for tag in tags:
         tags[tag].render(env, context.tag)
+    for cate in categories:
+        categories[cate].render(env, context.category)
     index = Index(config)
-    index.render(env, context.index, notes, tags=tags.values())
+    index.render(env, context.index, notes, categories=categories.values(),
+                 tags=tags.values())
     # move_res(config['theme_dir'] + '/resources', config['output_dir'])
 
 

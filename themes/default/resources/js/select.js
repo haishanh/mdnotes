@@ -26,11 +26,12 @@ function stickToc() {
 }
 
 (function () {
-  var tagSelect = document.getElementById('tagSelect');
-  if (tagSelect) {
-    tagSelect.onchange = function () { window.location.href = this.value;};
+  var dropdownElements = document.getElementsByClassName('dropdown-select');
+  for (var i = 0; i < dropdownElements.length; i++) {
+    dropdownElements[i].onchange = function () { 
+      window.location.href = this.value;
+    };
   }
-
   addAnchors();
   //$(window).scroll(stickToc);
 })();

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block left %}
+{# Catergory here
+<section id="left" class="side toc">
+</section>
+#}
+{% endblock %}
+
+{% block content %}
+{% for note in category.notes %}
+<div type="note-header">
+  <h2><a href="{{ note.link }}">{{ note.title }}</a></h2>
+  <div id="tags-in-header"></div>
+</div>
+{% endfor %}
+{% endblock %}
