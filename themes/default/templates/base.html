@@ -34,6 +34,8 @@
         {% endblock %}
       </main>       
     </div>
+    {% block beforefooter %}
+    {% endblock %}
     <footer><p>&copy; Copyright 2015 {{ author }}</p></footer>
     {% block afterfooter %}
     <script type="text/javascript" src="{{ url_for('jquery-1.11.3.min.js') }}"></script>
