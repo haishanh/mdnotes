@@ -198,18 +198,20 @@ class Note(object):
         if cate is not 'uncategorized':
             dst_dir = os.path.join(self._config['output_dir'],
                                    self._config['root'].strip('/'),
-                                   cate)
+                                   cate,
+                                   self.name + '.txt')
         else:
             dst_dir = os.path.join(self._config['output_dir'],
-                                   self._config['root'].strip('/'))
-        if not dst_dir.endswith(os.path.sep):
-            dst_dir += os.path.sep
+                                   self._config['root'].strip('/'),
+                                   self.name + '.txt')
+        # if not dst_dir.endswith(os.path.sep):
+        #   dst_dir += os.path.sep
         safe_copy(self.path, dst_dir)
         if cate is not 'uncategorized':
             self.source = self._config['root'] + cate + '/' + \
-                          self.filename
+                          self.name + '.txt'
         else:
-            self.source = self._config['root'] + self.filename
+            self.source = self._config['root'] + self.name + '.txt'
 
     def mk_path(self, html_dir):
         new_dir = html_dir + os.path.sep + self.name

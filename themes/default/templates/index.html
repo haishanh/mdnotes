@@ -10,13 +10,13 @@
 </section>
 #}
 <section id="left" class="side">
-  <div>Category</div>
+  <div class="select-title">Category</div>
   <select class="dropdown-select">
     {% for cate in categories %}
     <option value="{{ cate.link }}">{{ cate.name }}({{ cate.count }})</option>
     {% endfor %}
   </select>
-  <div>Category</div>
+  <div class="select-title">Tag</div>
   <select class="dropdown-select">
     {% for tag in tags %}
     <option value="{{ tag.link }}">{{ tag.name }}({{ tag.count }})</option>
