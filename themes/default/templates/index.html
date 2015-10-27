@@ -9,7 +9,7 @@
 <section id="left" class="side toc">
 </section>
 #}
-<section id="left" class="side">
+<section id="left" class="index">
   <div class="select-title">Category</div>
   <select class="dropdown-select">
     {% for cate in categories %}
@@ -32,6 +32,7 @@
 <div class="note-header">
   <h2><a href="{{ note.link }}">{{ note.title }}</a></h2>
   {% if note.tags %}
+  {#
   <ul class="tags">
   {% for tag in  note.tags %}
     <li>
@@ -39,6 +40,12 @@
     </li>
   {% endfor %}
   </ul>
+  #}
+  <div class="tag-bar">
+  {% for tag in  note.tags %}
+    <a href="{{ tag.link }}">{{ tag.name }}</a>
+  {% endfor %}
+  </div>
   {% endif %}
 </div>
 {% endfor %}

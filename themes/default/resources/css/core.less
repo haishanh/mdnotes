@@ -19,21 +19,22 @@ nav {
   }
 }
 
+.tag-bar {
+  a {
+      text-decoration: none;
+      border: 1px solid #ccc;
+      margin: 0 2px;
+      padding: 3px;
+      border-radius: 5px;
+      color: #ccc;
+  }
+}
+
 article {
   header {
     color: #4c6dd1;
     h2 {
       margin: 0 auto 8px auto;
-    }
-    .tag-bar {
-      a {
-          text-decoration: none;
-          border: 1px solid #ccc;
-          margin: 0 2px;
-          padding: 2px;
-          border-radius: 5px;
-          color: #ccc;
-      } 
     }
   }
   h1, h2, h3, h4, h5, h6, h7 {
@@ -89,9 +90,10 @@ article {
 // only apply to index page
 .index {
   .note-header {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     h2 {
       margin: 0 auto;
+      display: inline-block;
       a {
         color: #4c6dd1;
         text-decoration: none;
@@ -100,6 +102,10 @@ article {
         }
       }
     }
+  }
+  .tag-bar {
+    float: right;
+    margin-top: 5px;
   }
 }
 
@@ -167,13 +173,23 @@ article {
 main {
   width: @main-width;
   margin: 0 auto;
+  .note-list {
+    width: 700px;
+    margin: 0 auto;
+    a {
+      color: #4c6dd1;
+      text-decoration: none;
+      &:hover {
+        color: @red;
+      }
+    }
+  }
 }
 
 #left {
   float: left;
   min-height: 1px;
   width: 22%;
-  margin-right: 8%;
   //position: fixed;
   .select-title {
     margin: 5px auto;
@@ -199,8 +215,11 @@ main {
   float: left;
   width: 70%;
   margin: 0 auto;
-  // padding-left: 25%;
+  &.note {
+    padding-left: 8%;
+  }
 }
+
 
 a.headerlink {
   text-decoration: none;
