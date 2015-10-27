@@ -2,8 +2,8 @@ title: Haishan's
 author: haishanh
 
 menu:
-  Home: /notes
-  About: http://hanhaishan.com/about
+  Home: /notes/
+  About: http://hanhaishan.com/about/
 
 source_dir: notes
 output_dir: output

@@ -9,7 +9,7 @@ class Tag(object):
     def __init__(self, name, config):
         # name could be unicode
         self.name = name
-        self.link = config['root'] + 'tags/' + name
+        self.link = config['root'] + 'tags/' + name + '/'
         self.count = 0
         self.notes = []
         # private

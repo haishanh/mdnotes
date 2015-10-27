@@ -9,7 +9,7 @@ class Category(object):
     def __init__(self, name, config):
         # name could be unicode
         self.name = name
-        self.link = config['root'] + 'categories/' + name
+        self.link = config['root'] + 'categories/' + name + '/'
         self.count = 0
         self.notes = []
         # private
