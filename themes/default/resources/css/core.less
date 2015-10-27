@@ -1,4 +1,5 @@
 @font-base: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+@font-mono: Monaco, Menlo, Consolas, "Courier New", monospace;
 @color-base: #66675f;
 @main-width: 1200px;
 @font-size: 16px;
@@ -7,6 +8,7 @@ body {
   font-family: @font-base;
   color: @color-base;
   font-size: @font-size;
+  line-height: 25px;
 }
 
 nav {
@@ -36,6 +38,9 @@ article {
     h2 {
       margin: 0 auto 8px auto;
     }
+  }
+  h1, h2, h3 {
+    font-weight: 300;
   }
   h1, h2, h3, h4, h5, h6, h7 {
     position: relative;
@@ -102,6 +107,9 @@ article {
         }
       }
     }
+  }
+  h1, h2, h3 {
+    font-weight: 300;
   }
   .tag-bar {
     float: right;
@@ -183,6 +191,9 @@ main {
         color: @red;
       }
     }
+    h1, h2, h3 {
+     font-weight: 300;
+    }
   }
 }
 
@@ -227,9 +238,14 @@ a.headerlink {
   padding: 0 4px;
 }
 
+pre {
+  font-family: @font-mono;
+}
+
 code {
+  &:extend(pre);
   border-radius: 5px;
-  background-color: #f9f2f4;
+  background-color: #eee;
   white-space: nowrap;
   padding: 2px 4px;
 }
