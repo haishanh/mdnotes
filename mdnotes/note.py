@@ -190,9 +190,9 @@ class Note(object):
     def set_link(self):
         cate = self.category.name
         if cate is not 'uncategorized':
-            self.link = self._config['root'] + cate + '/' + self.name
+            self.link = self._config['root'] + cate + '/' + self.name + '/'
         else:
-            self.link = self._config['root'] + self.name
+            self.link = self._config['root'] + self.name + '/'
         # TODO to be removed from here
         # set source
         if cate is not 'uncategorized':
