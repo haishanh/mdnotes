@@ -1,6 +1,8 @@
-left: TOC
-middle: Body
-right: Tags
+[TODO]
+ * index page pagination
 
-in this article
-pygment themes
+[DONE]
+ * dir based category
+ * in this article
+ * pygment themes
+ * tag
