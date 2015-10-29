@@ -1,0 +1,25 @@
+#page-nav {
+  text-align: center;
+  margin: 20px auto;
+  * {
+    margin: 0 15px;
+    text-decoration: none; 
+  }
+  a {
+    &:hover {
+      color: @red;
+    }
+  }
+  .prev {
+    float: left;
+  }
+  .next {
+    float: right;
+  }
+  .current {
+    padding: 2px 5px;
+    background-color: #aaa;
+    border-radius: 4px;
+    color: #fff;
+  }
+}

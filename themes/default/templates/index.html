@@ -49,5 +49,10 @@
   {% endif %}
 </div>
 {% endfor %}
+{% if pagination %}
+<div id="page-nav">
+  {{ pagination }}
+</div>
+{% endif %}
 </section>
 {% endblock %}

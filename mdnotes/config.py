@@ -23,6 +23,7 @@ def get_config_default():
     config['source_dir'] = 'notes'
     config['output_dir'] = 'output'
     config['theme_dir'] = 'themes'
+    config['per_page'] = 10
     config['root'] = '/'
     config['highlight_style'] = 'friendly'
     return config
@@ -43,6 +44,12 @@ def normalize_config(config):
         config['root'] += '/'
     if not config['root'].startswith('/'):
         config['root'] = '/' + config['root']
+
+    config['per_page'] = int(config['per_page'])
+    if config['per_page'] < 1:
+        print('Warning: "per_page" set to {0} is '
+              'not allowed, use 1 instead'.format(config['per_page']))
+        config['per_page'] = 1
 
 
 def get_config_from_file(config_file='config.yml'):

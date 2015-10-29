@@ -34,11 +34,14 @@ def build():
     mds = md_files_generator(config['source_dir'])
     notes = []
     print('Building notes...')
+    count = 0
     for md in mds:
         note = Note(md, config, tags, categories)
         note.render(env, context.note)
         notes.append(note)
+        count += 1
         print( ' ' * 10 + note.title)
+    print("Generate {0} entries".format(count))
     for tag in tags:
         tags[tag].render(env, context.tag)
     for cate in categories:

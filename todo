@@ -1,5 +1,8 @@
 [TODO]
  * index page pagination
+ * search solution
+ * index entry ordering(by time or sth. else)
+ * handle space in file name?
 
 [DONE]
  * dir based category
