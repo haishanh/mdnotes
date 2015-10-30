@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import time
 import shutil
 import argparse
 
@@ -34,6 +35,7 @@ def build():
     mds = md_files_generator(config['source_dir'])
     notes = []
     print('Building notes...')
+    before = time.time()
     count = 0
     for md in mds:
         note = Note(md, config, tags, categories)
@@ -41,7 +43,10 @@ def build():
         notes.append(note)
         count += 1
         print( ' ' * 10 + note.title)
-    print("Generate {0} entries".format(count))
+    now = time.time()
+    print("Generate {0} entries in {1:.3f}s".format(count, now-before))
+    before = time.time()
+    print('Building index...')
     for tag in tags:
         tags[tag].render(env, context.tag)
     for cate in categories:
@@ -49,6 +54,8 @@ def build():
     index = Index(config)
     index.render(env, context.index, notes, categories=categories.values(),
                  tags=tags.values())
+    now = time.time()
+    print("Generate index in {0:.3f}s".format(now-before))
     # move_res(config['theme_dir'] + '/resources', config['output_dir'])
 
 
