@@ -1,6 +1,5 @@
 [TODO]
  * able to specify alternate config file path
- * able to use absolute file path for dir config
  * index page pagination
  * search solution
  * index entry ordering(by time or sth. else)
@@ -12,3 +11,4 @@
  * pygment themes
  * tag
  * timing html generate time
+ * able to use absolute file path for dir config

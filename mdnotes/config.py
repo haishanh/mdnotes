@@ -59,7 +59,9 @@ def get_config_from_file(config_file='config.yml'):
         with open(config_file) as f:
             config_raw = f.read().decode('utf-8')
     except:
-        prt_exit('Can not open {0}'.format(config_file))
+        prt_exit('Can not open configuration file {0}\n'
+                 'It may not exist in current directory '
+                 'or we do not have permission to open it'.format(config_file))
     config = yaml.load(config_raw)
     return config
 
