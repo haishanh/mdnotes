@@ -34,10 +34,12 @@ def normalize_config(config):
     Normalize config in case of error config.yml
 
         - remove trailing seperator for dir related config
-        - config['root'] should be '/' or '/notes/' style
+        - for url "dir" trailing slash is needed,
+          config['root'] should be '/' or '/notes/' style
     """
 
     for key in ['source_dir', 'output_dir', 'theme_dir']:
+        config[key] = os.path.expanduser(config[key])
         config[key] = config[key].rstrip(os.path.sep)
 
     if not config['root'].endswith('/'):
@@ -59,7 +61,6 @@ def get_config_from_file(config_file='config.yml'):
     except:
         prt_exit('Can not open {0}'.format(config_file))
     config = yaml.load(config_raw)
-    normalize_config(config)
     return config
 
 
@@ -124,6 +125,7 @@ class Config(object):
     def load_config(self):
         config = get_config_default()
         config.update(get_config_from_file())
+        normalize_config(config)
         self._config = config
         return config
 

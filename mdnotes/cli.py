@@ -100,7 +100,9 @@ def cleanup():
     try:
         shutil.rmtree(config['output_dir'])
     except:
-        prt_exit('Can not cleanup {0}'.format(config['output_dir']))
+        prt_exit('Can not cleanup directory {0}\n'
+                 'Maybe it does not exist or '
+                 'we have permission issue'.format(config['output_dir']))
 
 def main():
     args = parse_arguments()
