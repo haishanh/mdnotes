@@ -36,10 +36,10 @@
     </div>
     {% block beforefooter %}
     {% endblock %}
-    <footer><p>&copy; Copyright 2015 {{ author }}</p></footer>
+    <footer>Powered by <a href="https://github.com/haishanh/mdnotes">mdnotes</a><br/>&copy; Copyright 2015 {{ author }}</footer>
     {% block afterfooter %}
     <script type="text/javascript" src="{{ url_for('jquery-1.11.3.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('select.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('mdnotes.js') }}"></script>
     {% endblock %}
   </body>
 </html>
